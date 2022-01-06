@@ -1,6 +1,5 @@
 import express, { Application, Request, Response } from "express"
 import routes from "./routes/index"
-import path from "path"
 
 const app: Application = express()
 const port = 3000

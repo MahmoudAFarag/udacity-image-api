@@ -1,15 +1,10 @@
 import express, { Router, Request, Response } from "express"
 import { promises as fsPromises } from "fs"
-import sharp from "sharp"
+import { createImage, readThumbnail } from "../../utils/handleImage"
 
 const images: Router = express.Router()
 
-// Helper function to read from the thumbnails folder
-const readThumbnail = async (name: string, width: number, height: number): Promise<Buffer> => {
-  const thumbRequested = await fsPromises.readFile(`./public/images/thumbnails/${name}_${width}x${height}.jpg`)
-  return thumbRequested
-}
-
+// Images api main route
 images.get("/", async (req: Request, res: Response) => {
   // Extract query parameters provided into variable
   const name = req.query.name as string
@@ -37,7 +32,7 @@ images.get("/", async (req: Request, res: Response) => {
     res.status(200).end(thumbRequested)
   } catch (err) {
     // If the thumbnail does not exist, process the image with sharp
-    await sharp(image).resize(200, 200).toFile(`./public/images/thumbnails/${name}_${width}x${height}.jpg`)
+    await createImage(name, image, width, height)
     console.log("processed")
     const thumbnail = await readThumbnail(name, width, height)
     res.end(thumbnail)
