@@ -1,6 +1,7 @@
 import express, { Router, Request, Response } from "express"
 import { promises as fsPromises } from "fs"
 import { createImage, readThumbnail } from "../../utils/handleImage"
+import { FormatEnum } from "sharp"
 
 const images: Router = express.Router()
 
@@ -10,10 +11,11 @@ images.get("/", async (req: Request, res: Response) => {
   const name = req.query.name as string
   const width = req.query.width as unknown as number
   const height = req.query.height as unknown as number
+  const format = req.query.format as keyof FormatEnum
 
   // Check that atleast a name is provided
   if (!name) {
-    return res.status(404).send("Please provide a file name")
+    return res.status(404).send(`Please provide a file name`)
   }
 
   // Read the full image requested from the original folder
@@ -27,14 +29,12 @@ images.get("/", async (req: Request, res: Response) => {
 
   try {
     // Check if the thumbnail already exists in the thumbnail folder
-    const thumbRequested = await readThumbnail(name, width, height)
-    console.log("Did not process")
+    const thumbRequested = await readThumbnail(name, width, height, format)
     res.status(200).end(thumbRequested)
   } catch (err) {
     // If the thumbnail does not exist, process the image with sharp
-    await createImage(name, image, width, height)
-    console.log("processed")
-    const thumbnail = await readThumbnail(name, width, height)
+    await createImage(name, image, width, height, format)
+    const thumbnail = await readThumbnail(name, width, height, format)
     res.end(thumbnail)
   }
 })
