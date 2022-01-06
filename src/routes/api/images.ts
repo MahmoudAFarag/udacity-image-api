@@ -15,7 +15,9 @@ images.get("/", async (req: Request, res: Response) => {
 
   // Check that atleast a name is provided
   if (!name) {
-    return res.status(404).send(`Please provide a file name`)
+    return res.status(404).json({
+      error: `Please provide a file name`,
+    })
   }
 
   // Read the full image requested from the original folder
@@ -25,6 +27,13 @@ images.get("/", async (req: Request, res: Response) => {
   if (!width || !height) {
     res.set("Content-Type", "image/jpeg")
     return res.end(image)
+  }
+
+  // check if the format is provided
+  if (!format) {
+    return res.status(404).json({
+      error: "please provide a format",
+    })
   }
 
   try {
