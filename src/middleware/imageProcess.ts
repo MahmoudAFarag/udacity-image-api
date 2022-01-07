@@ -7,6 +7,7 @@ const imageProcess = async (req: Request, res: Response, next: () => void) => {
   const height = req.query.height as unknown as number
   let image: Buffer = Buffer.from("sd")
 
+  // Check if no name is provided
   if (!name) {
     return res.status(404).json({
       error: `Please provide a file name`,
@@ -17,7 +18,6 @@ const imageProcess = async (req: Request, res: Response, next: () => void) => {
   wrap in try catch block to catch errors when wrong characters are provided such as:
   url?name=astronaut?width=200 instead of url?name=astronaut&width=200
   */
-
   try {
     image = await fsPromises.readFile(`./public/images/full/${name}.jpg`)
   } catch (err) {
@@ -28,7 +28,6 @@ const imageProcess = async (req: Request, res: Response, next: () => void) => {
 
   // Check if no height or width is provided then return the full image
   if (!width || !height) {
-    console.log("here now in width check")
     return res.end(image)
   }
 

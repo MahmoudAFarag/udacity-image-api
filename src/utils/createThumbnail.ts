@@ -8,6 +8,7 @@ const createThumbnail = async (
   height: number,
   format: keyof FormatEnum
 ): Promise<void> => {
+  // Process and resize the image according to the size and format provided
   await sharp(image)
     .resize(+width, +height)
     .toFormat(format)
