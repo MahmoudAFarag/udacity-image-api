@@ -11,4 +11,10 @@ app.use(morgan("tiny"))
 // Import api route
 app.use("/api", routes)
 
+app.get("/", async (req: Request, res: Response) => {
+  res.send("Image Processing API")
+})
+
 app.listen(port, () => console.log(`Example app listening on port ${port}!`))
+
+export default app
