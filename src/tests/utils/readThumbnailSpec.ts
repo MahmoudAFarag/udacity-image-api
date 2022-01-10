@@ -6,7 +6,6 @@ describe("read thumbnails from the thumbnails folder", () => {
       width: 200,
       height: 200,
       format: "png",
-      test: true,
     })
     expect(thumbnailRequested).toBeTruthy()
   })
@@ -16,7 +15,6 @@ describe("read thumbnails from the thumbnails folder", () => {
       width: 600,
       height: 400,
       format: "webp",
-      test: true,
     })
     expect(thumbnailRequested).toBeTruthy()
   })

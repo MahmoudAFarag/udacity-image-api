@@ -5,7 +5,7 @@ describe("create thumbnails using sharp", () => {
   let image: Buffer
 
   beforeAll(async () => {
-    image = await fsPromises.readFile("./src/tests/images/full/book.jpg")
+    image = await fsPromises.readFile("./public/images/full/book.jpg")
   })
 
   it("should create a 200x200 thumbnail of the image with png extension", async () => {
@@ -13,7 +13,6 @@ describe("create thumbnails using sharp", () => {
       width: 200,
       height: 200,
       format: "png",
-      test: true,
     })
     expect(thumbnailCreated).toBeTruthy()
   })
@@ -23,7 +22,6 @@ describe("create thumbnails using sharp", () => {
       width: 600,
       height: 400,
       format: "webp",
-      test: true,
     })
     expect(thumbnailCreated).toBeTruthy()
   })
