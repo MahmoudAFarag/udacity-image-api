@@ -17,6 +17,20 @@ const thumbnailProcess = async (req: Request, res: Response, next: () => void) =
     })
   }
 
+  // Check if width and height are numbers
+  if (isNaN(width) || isNaN(height)) {
+    return res.status(404).json({
+      error: `Please provide a valid width and height`,
+    })
+  }
+
+  // Check if width and height are positive numbers
+  if (width <= 0 || height <= 0) {
+    return res.status(404).json({
+      error: `Please provide a positive width and height`,
+    })
+  }
+
   try {
     // Check if the thumbnail already exists in the thumbnail folder
     const thumbRequested = await readThumbnail(name, {
