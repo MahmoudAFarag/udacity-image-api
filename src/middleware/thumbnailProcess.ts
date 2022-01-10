@@ -19,12 +19,17 @@ const thumbnailProcess = async (req: Request, res: Response, next: () => void) =
 
   try {
     // Check if the thumbnail already exists in the thumbnail folder
+    console.log("broke here")
     const thumbRequested = await readThumbnail(name, width, height, format)
     console.log("Image served from cache")
     res.status(200).end(thumbRequested)
   } catch (err) {
     // If the thumbnail does not exist, process the image with shar
-    await createThumbnail(name, image, width, height, format)
+    await createThumbnail(name, image, {
+      width,
+      height,
+      format,
+    })
     console.log("Image processing...")
     const thumbRequested = await readThumbnail(name, width, height, format)
     res.end(thumbRequested)

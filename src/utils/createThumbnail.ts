@@ -1,40 +1,35 @@
 import sharp, { FormatEnum } from "sharp"
 
 interface CreateOptions {
-  test: boolean
+  width: number
+  height: number
+  format: keyof FormatEnum
+  test?: boolean
 }
 
 // Helper function to process and save requested image using sharp
-const createThumbnail = async (
-  name: string,
-  image: Buffer,
-  width: number,
-  height: number,
-  format: keyof FormatEnum,
-  options?: CreateOptions
-): Promise<boolean> => {
+const createThumbnail = async (name: string, image: Buffer, options: CreateOptions): Promise<boolean> => {
   // Process and resize the image according to the size and format provided
   try {
     // Check if test is passed into options, save image to test folder if true
-    if (options?.test) {
+    if (options.test) {
       await sharp(image)
-        .resize(+width, +height)
-        .toFormat(format)
-        .toFile(`./src/tests/images/thumbnails/${name}_${width}x${height}.${format}`)
-
-      console.log(__dirname)
+        .resize(+options.width, +options.height)
+        .toFormat(options.format)
+        .toFile(`./src/tests/images/thumbnails/${name}_${options.width}x${options.height}.${options.format}`)
 
       return true
     }
 
     // Save image to public folder if test is not passed into options
     await sharp(image)
-      .resize(+width, +height)
-      .toFormat(format)
-      .toFile(`./public/images/thumbnails/${name}_${width}x${height}.${format}`)
+      .resize(+options.width, +options.height)
+      .toFormat(options.format)
+      .toFile(`./public/images/thumbnails/${name}_${options.width}x${options.height}.${options.format}`)
 
     return true
   } catch (err) {
+    console.log(err)
     return false
   }
 }
