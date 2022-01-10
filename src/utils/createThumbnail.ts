@@ -29,7 +29,7 @@ const createThumbnail = async (name: string, image: Buffer, options: CreateOptio
 
     return true
   } catch (err) {
-    console.log(err)
+    console.log("Cannot process image", err)
     return false
   }
 }

@@ -19,4 +19,20 @@ describe("Test endpoint responses", () => {
       })
     })
   })
+
+  describe("Test /images endpoint response", () => {
+    it("should return status code 404 when no name is provided", (done) => {
+      request.get("/api/images").then((res) => {
+        expect(res.statusCode).toBe(404)
+        done()
+      })
+    })
+
+    it("should return status code 200 when name is provided", (done) => {
+      request.get("/api/images?name=book").then((res) => {
+        expect(res.statusCode).toBe(200)
+        done()
+      })
+    })
+  })
 })

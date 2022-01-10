@@ -19,7 +19,11 @@ const thumbnailProcess = async (req: Request, res: Response, next: () => void) =
 
   try {
     // Check if the thumbnail already exists in the thumbnail folder
-    const thumbRequested = await readThumbnail(name, width, height, format)
+    const thumbRequested = await readThumbnail(name, {
+      width,
+      height,
+      format,
+    })
 
     // If the thumbnail does not exist, create it
     if (!thumbRequested) {
@@ -31,7 +35,11 @@ const thumbnailProcess = async (req: Request, res: Response, next: () => void) =
 
       console.log("Image processing...")
 
-      const thumbRequested = await readThumbnail(name, width, height, format)
+      const thumbRequested = await readThumbnail(name, {
+        width,
+        height,
+        format,
+      })
 
       return res.end(thumbRequested)
     }
@@ -40,7 +48,9 @@ const thumbnailProcess = async (req: Request, res: Response, next: () => void) =
     console.log("Image served from cache")
     res.status(200).end(thumbRequested)
   } catch (err) {
-    console.log(err)
+    return res.status(404).json({
+      err,
+    })
   }
 
   next()
